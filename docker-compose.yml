@@ -1,0 +1,22 @@
+services:
+  web:
+    build: .
+    env_file: .env
+    environment:
+      ORDERDESK_DATABASE_URL: sqlite:////app/state/orderdesk.db
+      ORDERDESK_EXPORT_DIR: /app/state/exports
+    volumes:
+      - ./state:/app/state
+    ports:
+      - "8000:8000"
+  worker:
+    build: .
+    env_file: .env
+    environment:
+      ORDERDESK_DATABASE_URL: sqlite:////app/state/orderdesk.db
+      ORDERDESK_EXPORT_DIR: /app/state/exports
+    volumes:
+      - ./state:/app/state
+    command: ["orderdesk", "worker"]
+    depends_on:
+      - web

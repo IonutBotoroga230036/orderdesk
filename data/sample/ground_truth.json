@@ -1,0 +1,102 @@
+{
+  "description": "Correct orders for the sample emails, as a person would enter them.",
+  "emails": [
+    {
+      "message_id": "<01-de-linde@sample.orderdesk>",
+      "expected": [
+        {
+          "product_code": "LAV-HID-P19",
+          "quantity": 240
+        },
+        {
+          "product_code": "HYD-ANN-C5",
+          "quantity": 60
+        },
+        {
+          "product_code": "BUX-SEM-P15",
+          "quantity": 500
+        },
+        {
+          "product_code": "GER-ROZ-P13",
+          "quantity": 120
+        }
+      ]
+    },
+    {
+      "message_id": "<02-brightwell@sample.orderdesk>",
+      "expected": [
+        {
+          "product_code": "SAL-CAR-P13",
+          "quantity": 300
+        },
+        {
+          "product_code": "NEP-WAL-P13",
+          "quantity": 100
+        },
+        {
+          "product_code": "PEN-HAM-P17",
+          "quantity": 80
+        },
+        {
+          "product_code": "OLE-EUR-C10",
+          "quantity": 10
+        }
+      ]
+    },
+    {
+      "message_id": "<03-hoffmann@sample.orderdesk>",
+      "expected": [
+        {
+          "product_code": "HYD-ANN-C5",
+          "quantity": 80
+        },
+        {
+          "product_code": "PRU-LAU-C5",
+          "quantity": 150
+        },
+        {
+          "product_code": "ROS-BON-C3",
+          "quantity": 60
+        },
+        {
+          "product_code": "ACE-PAL-C7",
+          "quantity": 12
+        }
+      ]
+    },
+    {
+      "message_id": "<04-groen-in-de-stad@sample.orderdesk>",
+      "expected": [
+        {
+          "product_code": "PEN-HAM-P17",
+          "quantity": 180
+        },
+        {
+          "product_code": "CAL-KAR-P17",
+          "quantity": 180
+        },
+        {
+          "product_code": "OLE-EUR-C10",
+          "quantity": 25
+        }
+      ]
+    },
+    {
+      "message_id": "<05-les-saules@sample.orderdesk>",
+      "expected": [
+        {
+          "product_code": "PHO-RED-C3",
+          "quantity": 200
+        },
+        {
+          "product_code": "HEU-PAL-P13",
+          "quantity": 100
+        },
+        {
+          "product_code": "PRU-LAU-C5",
+          "quantity": 50
+        }
+      ]
+    }
+  ]
+}
