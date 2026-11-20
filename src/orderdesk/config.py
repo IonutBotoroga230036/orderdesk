@@ -6,7 +6,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_prefix="ORDERDESK_", extra="ignore")
+    # env_ignore_empty: a blank line like "ORDERDESK_EXACT_DIVISION=" in .env means "not set",
+    # so it falls back to the default instead of failing to parse "" as a number.
+    model_config = SettingsConfigDict(env_file=".env", env_prefix="ORDERDESK_", extra="ignore", env_ignore_empty=True)
 
     database_url: str = "sqlite:///./orderdesk.db"
 
