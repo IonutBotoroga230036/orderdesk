@@ -44,6 +44,10 @@ Master data (copied from the ERP): `products`, `customers`, `customer_aliases`,
 
 - **SQLite first.** One small deployment per client is simpler to run and to explain to a
   client's IT person. SQLAlchemy keeps the move to Postgres a configuration change.
+- **One schema, three extractors.** Claude (forced tool call), the local Ollama extractor
+  (JSON-schema constrained output) and the heuristic all return the same `Extraction`. The
+  matcher, rules, review screen and evaluation do not know or care which one ran, so a client
+  can move between cloud and local by changing one setting.
 - **Forced tool call for extraction.** The model must answer through the `record_order` schema,
   so the output is always structured. Pydantic validates it again before use.
 - **Plain HTML/JS review screen.** No build step, easy to brand per client.
