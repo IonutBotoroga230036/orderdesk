@@ -1,8 +1,8 @@
-# Fully local setup: OrderDesk plus an Ollama model server on the same machine.
+# Fully local setup: Tickwell plus an Ollama model server on the same machine.
 # No order data leaves this machine.
 #
 #   docker compose -f docker-compose.yml -f docker-compose.local.yml up -d --build
-#   docker compose exec ollama ollama pull <model>     # once, then set ORDERDESK_OLLAMA_MODEL in .env
+#   docker compose exec ollama ollama pull <model>     # once, then set TICKWELL_OLLAMA_MODEL in .env
 #
 # GPU: on a machine with an NVIDIA GPU and the NVIDIA Container Toolkit, uncomment the
 # "deploy" block below. Without it the model runs on the CPU, which works but is slower.
@@ -23,16 +23,16 @@ services:
 
   web:
     environment:
-      ORDERDESK_EXTRACTOR: local
-      ORDERDESK_LOCAL_ONLY: "true"
-      ORDERDESK_OLLAMA_BASE_URL: http://ollama:11434
+      TICKWELL_EXTRACTOR: local
+      TICKWELL_LOCAL_ONLY: "true"
+      TICKWELL_OLLAMA_BASE_URL: http://ollama:11434
     depends_on:
       - ollama
 
   worker:
     environment:
-      ORDERDESK_EXTRACTOR: local
-      ORDERDESK_LOCAL_ONLY: "true"
-      ORDERDESK_OLLAMA_BASE_URL: http://ollama:11434
+      TICKWELL_EXTRACTOR: local
+      TICKWELL_LOCAL_ONLY: "true"
+      TICKWELL_OLLAMA_BASE_URL: http://ollama:11434
     depends_on:
       - ollama

@@ -7,7 +7,10 @@ button,input,select{font:inherit;color:inherit}
 .muted{color:var(--muted)}
 .top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:20px;padding:10px 20px;background:var(--surface);border-bottom:1px solid var(--line);flex-wrap:wrap}
 .brand{display:flex;gap:10px;align-items:center;margin-right:auto}
-.logo{width:28px;height:28px;border-radius:6px;background:var(--leaf)}
+.logo{width:36px;height:36px;flex:none}
+.logo-env{fill:none;stroke:var(--ink);stroke-width:7}
+.logo-lines{fill:none;stroke:var(--muted);stroke-opacity:.6;stroke-width:7;stroke-linecap:round}
+.logo-tick{fill:none;stroke:var(--leaf);stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
 .brand strong{display:block;font-weight:800}
 .brand span{display:block;font-size:13px;color:var(--muted)}
 .stats{display:flex;gap:16px;font-size:13px;color:var(--muted)}

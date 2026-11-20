@@ -18,6 +18,6 @@ jobs:
       - run: pytest -q
       - name: Offline accuracy check on sample emails
         run: |
-          orderdesk init --reset
-          orderdesk ingest
-          orderdesk evaluate --truth data/sample/ground_truth.json --extractor heuristic
+          tickwell init --reset
+          tickwell ingest
+          tickwell evaluate --truth data/sample/ground_truth.json --extractor heuristic

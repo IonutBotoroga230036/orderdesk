@@ -1,5 +1,5 @@
-from orderdesk.matching import CatalogMatcher, normalize, parse_pot
-from orderdesk.matching.catalog import CatalogItem
+from tickwell.matching import CatalogMatcher, normalize, parse_pot
+from tickwell.matching.catalog import CatalogItem
 
 ITEMS = [
     CatalogItem("LAV-HID-P19", "Lavandula angustifolia 'Hidcote'", "P19"),

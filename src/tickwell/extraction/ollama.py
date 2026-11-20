@@ -54,7 +54,7 @@ class OllamaExtractor:
     def extract(self, text: str, ctx: ExtractionContext) -> Extraction:
         prompt = build_prompt(text, ctx, final_instruction=JSON_INSTRUCTION)
         if len(prompt) / 3.5 > self.num_ctx * 0.8:  # rough characters-per-token estimate
-            log.warning("Prompt is close to the %d-token context window; raise ORDERDESK_OLLAMA_NUM_CTX.", self.num_ctx)
+            log.warning("Prompt is close to the %d-token context window; raise TICKWELL_OLLAMA_NUM_CTX.", self.num_ctx)
         last_error = "empty answer"
         for _attempt in range(self.retries + 1):
             content = self._chat(prompt).strip()

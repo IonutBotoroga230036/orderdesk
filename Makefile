@@ -4,13 +4,13 @@ install:
 	pip install -e ".[dev]"
 
 demo:
-	orderdesk init --reset
-	orderdesk ingest
-	orderdesk draft
-	orderdesk serve
+	tickwell init --reset
+	tickwell ingest
+	tickwell draft
+	tickwell serve
 
 serve:
-	orderdesk serve --reload
+	tickwell serve --reload
 
 test:
 	pytest -q
@@ -19,10 +19,10 @@ lint:
 	ruff check src tests scripts
 
 eval:
-	orderdesk evaluate --truth data/sample/ground_truth.json
+	tickwell evaluate --truth data/sample/ground_truth.json
 
 eval-local:
-	orderdesk evaluate --truth data/sample/ground_truth.json --extractor local
+	tickwell evaluate --truth data/sample/ground_truth.json --extractor local
 
 eval-offline:
-	orderdesk evaluate --truth data/sample/ground_truth.json --extractor heuristic
+	tickwell evaluate --truth data/sample/ground_truth.json --extractor heuristic

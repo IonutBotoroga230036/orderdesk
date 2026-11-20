@@ -1,7 +1,7 @@
 from conftest import SAMPLE
 
-from orderdesk.parsing import extract_attachment_text, parse_eml, sender_domain
-from orderdesk.parsing.email_parser import html_to_text, strip_quoted_reply
+from tickwell.parsing import extract_attachment_text, parse_eml, sender_domain
+from tickwell.parsing.email_parser import html_to_text, strip_quoted_reply
 
 
 def test_parse_eml_with_pdf():

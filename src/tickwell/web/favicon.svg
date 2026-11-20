@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <mask id="tw-gap" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120">
+      <rect width="120" height="120" fill="#fff"/>
+      <path d="M29 79 H38 L48 88 L104 20" fill="none" stroke="#000" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+    </mask>
+  </defs>
+  <g mask="url(#tw-gap)">
+    <rect x="16" y="34" width="84" height="62" rx="10" fill="none" stroke="#18301F" stroke-width="11"/>
+    <path d="M29 51 H62" fill="none" stroke="#A9B8AC" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <path d="M29 79 H38 L48 88 L104 20" fill="none" stroke="#2E6B3B" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

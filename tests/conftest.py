@@ -9,18 +9,18 @@ SAMPLE = ROOT / "data" / "sample"
 @pytest.fixture()
 def env(tmp_path, monkeypatch):
     """Fresh database with sample master data and the five sample emails ingested."""
-    monkeypatch.setenv("ORDERDESK_DATABASE_URL", f"sqlite:///{tmp_path / 'test.db'}")
-    monkeypatch.setenv("ORDERDESK_EXTRACTOR", "heuristic")
-    monkeypatch.setenv("ORDERDESK_MAIL_SOURCE", "folder")
-    monkeypatch.setenv("ORDERDESK_INBOX_DIR", str(SAMPLE / "emails"))
-    monkeypatch.setenv("ORDERDESK_EXPORT_DIR", str(tmp_path / "exports"))
-    monkeypatch.setenv("ORDERDESK_UI_PASSWORD", "")
+    monkeypatch.setenv("TICKWELL_DATABASE_URL", f"sqlite:///{tmp_path / 'test.db'}")
+    monkeypatch.setenv("TICKWELL_EXTRACTOR", "heuristic")
+    monkeypatch.setenv("TICKWELL_MAIL_SOURCE", "folder")
+    monkeypatch.setenv("TICKWELL_INBOX_DIR", str(SAMPLE / "emails"))
+    monkeypatch.setenv("TICKWELL_EXPORT_DIR", str(tmp_path / "exports"))
+    monkeypatch.setenv("TICKWELL_UI_PASSWORD", "")
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
 
-    from orderdesk.config import get_settings
-    from orderdesk.db import init_db, reset_engine, session_scope
-    from orderdesk.ingest import get_mail_source, ingest
-    from orderdesk.seed import load_master_data
+    from tickwell.config import get_settings
+    from tickwell.db import init_db, reset_engine, session_scope
+    from tickwell.ingest import get_mail_source, ingest
+    from tickwell.seed import load_master_data
 
     get_settings.cache_clear()
     reset_engine()
@@ -35,7 +35,7 @@ def env(tmp_path, monkeypatch):
 
 @pytest.fixture()
 def session(env):
-    from orderdesk.db import new_session
+    from tickwell.db import new_session
 
     s = new_session()
     yield s
@@ -45,6 +45,6 @@ def session(env):
 def email_by_subject(session, subject):
     from sqlalchemy import select
 
-    from orderdesk.models import Email
+    from tickwell.models import Email
 
     return session.scalar(select(Email).where(Email.subject == subject))

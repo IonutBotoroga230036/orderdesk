@@ -1,7 +1,7 @@
 """Database tables.
 
 The catalog, customers, aliases and order history are copied from the client's ERP.
-Emails, drafts and audit events are OrderDesk's own data. Every correction a reviewer
+Emails, drafts and audit events are Tickwell's own data. Every correction a reviewer
 makes is logged, which is how accuracy is measured and how aliases are learned.
 """
 

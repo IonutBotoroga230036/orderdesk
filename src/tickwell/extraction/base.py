@@ -92,11 +92,11 @@ def get_extractor(name: str | None = None) -> Extractor:
 
         if not settings.ollama_model:
             raise ExtractionError(
-                "ORDERDESK_OLLAMA_MODEL is not set. Pull a model with `ollama pull <model>` and put its name in .env."
+                "TICKWELL_OLLAMA_MODEL is not set. Pull a model with `ollama pull <model>` and put its name in .env."
             )
         if settings.local_only and not is_private_host(settings.ollama_base_url):
             raise ExtractionError(
-                f"Local-only mode is on, but ORDERDESK_OLLAMA_BASE_URL ({settings.ollama_base_url}) is not on this "
+                f"Local-only mode is on, but TICKWELL_OLLAMA_BASE_URL ({settings.ollama_base_url}) is not on this "
                 "machine or the local network."
             )
         return OllamaExtractor(base_url=settings.ollama_base_url, model=settings.ollama_model,
@@ -105,7 +105,7 @@ def get_extractor(name: str | None = None) -> Extractor:
         from .claude import ClaudeExtractor
 
         if settings.local_only:
-            raise ExtractionError("Local-only mode is on (ORDERDESK_LOCAL_ONLY=true): the Claude extractor is disabled.")
+            raise ExtractionError("Local-only mode is on (TICKWELL_LOCAL_ONLY=true): the Claude extractor is disabled.")
 
         if not settings.anthropic_api_key:
             raise ExtractionError("ANTHROPIC_API_KEY is not set. Add it to .env or use --extractor heuristic.")

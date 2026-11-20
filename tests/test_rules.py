@@ -1,5 +1,5 @@
-from orderdesk.rules import apply_rules
-from orderdesk.schemas import ProposedLine
+from tickwell.rules import apply_rules
+from tickwell.schemas import ProposedLine
 
 
 def test_out_of_stock_and_short_stock():

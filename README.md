@@ -1,6 +1,8 @@
-# OrderDesk
+<img src="docs/brand/tickwell-mark.svg" width="84" alt="Tickwell logo">
 
-OrderDesk turns customer order emails into draft sales orders. It reads the email and its
+# Tickwell
+
+Tickwell turns customer order emails into draft sales orders. It reads the email and its
 attachments (PDF, Excel), recognises the customer, matches every item to the catalog, checks
 stock, and puts a draft in front of a person. Nothing reaches the ERP until they approve it.
 
@@ -20,7 +22,7 @@ This is an MVP that runs end to end. Honest overview:
 | Offline heuristic extractor | Working, tidy lists only (baseline) |
 | Catalog matching, customer aliases, stock and quantity rules | Working, tested |
 | Review screen with source highlighting, approve flow | Working |
-| Shadow test (`orderdesk evaluate`) | Working |
+| Shadow test (`tickwell evaluate`) | Working |
 | Alias learning from reviewer corrections | Working |
 | Mail sources: folder, IMAP | Working |
 | Mail source: Microsoft 365 (Graph) | Written, not yet tested against a real tenant |
@@ -35,10 +37,10 @@ python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 cp .env.example .env
 
-orderdesk init --reset          # create the database and load data/sample/*.csv
-orderdesk ingest                # read the sample .eml files
-orderdesk draft --extractor heuristic
-orderdesk serve                 # open http://127.0.0.1:8000
+tickwell init --reset          # create the database and load data/sample/*.csv
+tickwell ingest                # read the sample .eml files
+tickwell draft --extractor heuristic
+tickwell serve                 # open http://127.0.0.1:8000
 ```
 
 The heuristic extractor gets the tidy emails right and misses the vague ones ("repeat last
@@ -49,17 +51,17 @@ week's order but double the salvias"). That gap is the point of the product.
 Put your key in `.env` (`ANTHROPIC_API_KEY=...`), then:
 
 ```bash
-orderdesk init --reset && orderdesk ingest
-orderdesk draft                 # uses ORDERDESK_EXTRACTOR=claude
-orderdesk evaluate --truth data/sample/ground_truth.json
+tickwell init --reset && tickwell ingest
+tickwell draft                 # uses TICKWELL_EXTRACTOR=claude
+tickwell evaluate --truth data/sample/ground_truth.json
 ```
 
-Compare with `orderdesk evaluate --truth data/sample/ground_truth.json --extractor heuristic`.
+Compare with `tickwell evaluate --truth data/sample/ground_truth.json --extractor heuristic`.
 
 ## Fully local (no data leaves the machine)
 
 For clients who don't allow order data to go to a cloud AI service. An open-weight model runs
-on the same machine through [Ollama](https://ollama.com); everything else in OrderDesk was
+on the same machine through [Ollama](https://ollama.com); everything else in Tickwell was
 already local.
 
 ```bash
@@ -67,15 +69,15 @@ already local.
 ollama pull <model>
 
 # 2. In .env
-ORDERDESK_EXTRACTOR=local
-ORDERDESK_OLLAMA_MODEL=<model>
-ORDERDESK_LOCAL_ONLY=true
+TICKWELL_EXTRACTOR=local
+TICKWELL_OLLAMA_MODEL=<model>
+TICKWELL_LOCAL_ONLY=true
 
 # 3. Measure it against the same ground truth as Claude
-orderdesk evaluate --truth data/sample/ground_truth.json --extractor local
+tickwell evaluate --truth data/sample/ground_truth.json --extractor local
 ```
 
-`ORDERDESK_LOCAL_ONLY=true` makes the promise enforceable: the Claude extractor refuses to
+`TICKWELL_LOCAL_ONLY=true` makes the promise enforceable: the Claude extractor refuses to
 start, and so does a local extractor pointed at a server outside the local network.
 
 Full setup, model choice, hardware and the Docker variant: [docs/local-deployment.md](docs/local-deployment.md).
@@ -110,7 +112,7 @@ Design rules that make this safe to sell:
 ## Project layout
 
 ```
-src/orderdesk/
+src/tickwell/
   parsing/        email + attachment text
   extraction/     Claude, local (Ollama) and heuristic extractors, shared prompt and schema
   matching/       normalisation, pot sizes, catalog matcher
@@ -132,22 +134,22 @@ tests/            pytest suite (runs offline)
 
 | Command | What it does |
 |---|---|
-| `orderdesk init [--data DIR] [--reset]` | Create tables, load master data CSVs |
-| `orderdesk ingest [--source folder\|imap\|graph]` | Fetch new emails |
-| `orderdesk draft [--extractor claude\|local\|heuristic]` | Draft all new emails |
-| `orderdesk serve [--host --port --reload]` | Review screen + API on port 8000 |
-| `orderdesk worker [--every N] [--once]` | Poll the mailbox and draft continuously |
-| `orderdesk evaluate --truth FILE` | Shadow test against known correct orders |
+| `tickwell init [--data DIR] [--reset]` | Create tables, load master data CSVs |
+| `tickwell ingest [--source folder\|imap\|graph]` | Fetch new emails |
+| `tickwell draft [--extractor claude\|local\|heuristic]` | Draft all new emails |
+| `tickwell serve [--host --port --reload]` | Review screen + API on port 8000 |
+| `tickwell worker [--every N] [--once]` | Poll the mailbox and draft continuously |
+| `tickwell evaluate --truth FILE` | Shadow test against known correct orders |
 
-All settings live in `.env` (see `.env.example`). Set `ORDERDESK_UI_USER` and
-`ORDERDESK_UI_PASSWORD` before exposing the review screen anywhere but localhost.
+All settings live in `.env` (see `.env.example`). Set `TICKWELL_UI_USER` and
+`TICKWELL_UI_PASSWORD` before exposing the review screen anywhere but localhost.
 
 ## Running for a client
 
 ```bash
 cp .env.example .env            # fill in mailbox, ERP, API key, UI password
 docker compose up -d --build    # web on :8000 + worker polling the mailbox
-docker compose run --rm web orderdesk init --data client_data
+docker compose run --rm web tickwell init --data client_data
 ```
 
 Put the client's exports in `client_data/` (ignored by git) using the formats in

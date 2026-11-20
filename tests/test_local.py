@@ -6,10 +6,10 @@ import httpx
 import pytest
 from conftest import email_by_subject
 
-from orderdesk.extraction import ExtractionError, get_extractor
-from orderdesk.extraction.base import is_private_host
-from orderdesk.extraction.ollama import OllamaExtractor
-from orderdesk.pipeline import draft_email
+from tickwell.extraction import ExtractionError, get_extractor
+from tickwell.extraction.base import is_private_host
+from tickwell.extraction.ollama import OllamaExtractor
+from tickwell.pipeline import draft_email
 
 BRIGHTWELL = {
     "customer_id": "C1177", "delivery_date": "2026-10-20", "delivery_text": "Tuesday the 20th",
@@ -100,7 +100,7 @@ def test_private_host_detection():
 
 
 def settings_with(monkeypatch, **env):
-    from orderdesk.config import get_settings
+    from tickwell.config import get_settings
 
     for k, v in env.items():
         monkeypatch.setenv(k, v)
@@ -108,18 +108,18 @@ def settings_with(monkeypatch, **env):
 
 
 def test_local_only_mode_blocks_cloud(env, monkeypatch):
-    settings_with(monkeypatch, ORDERDESK_LOCAL_ONLY="true", ANTHROPIC_API_KEY="sk-test",
-                  ORDERDESK_OLLAMA_MODEL="m", ORDERDESK_OLLAMA_BASE_URL="https://ollama.example.com")
+    settings_with(monkeypatch, TICKWELL_LOCAL_ONLY="true", ANTHROPIC_API_KEY="sk-test",
+                  TICKWELL_OLLAMA_MODEL="m", TICKWELL_OLLAMA_BASE_URL="https://ollama.example.com")
     with pytest.raises(ExtractionError, match="Claude extractor is disabled"):
         get_extractor("claude")
     with pytest.raises(ExtractionError, match="not on this machine"):
         get_extractor("local")
-    settings_with(monkeypatch, ORDERDESK_OLLAMA_BASE_URL="http://ollama:11434")
+    settings_with(monkeypatch, TICKWELL_OLLAMA_BASE_URL="http://ollama:11434")
     assert get_extractor("local").name == "local"
     assert get_extractor("heuristic").name == "heuristic"
 
 
 def test_local_needs_a_model_name(env, monkeypatch):
-    settings_with(monkeypatch, ORDERDESK_OLLAMA_MODEL="")
-    with pytest.raises(ExtractionError, match="ORDERDESK_OLLAMA_MODEL"):
+    settings_with(monkeypatch, TICKWELL_OLLAMA_MODEL="")
+    with pytest.raises(ExtractionError, match="TICKWELL_OLLAMA_MODEL"):
         get_extractor("local")

@@ -8,10 +8,10 @@ def test_settings_load_from_env_example_as_is(tmp_path, monkeypatch):
     shutil.copy(ROOT / ".env.example", tmp_path / ".env")
     monkeypatch.chdir(tmp_path)
     for key in list(__import__("os").environ):
-        if key.startswith("ORDERDESK_") or key == "ANTHROPIC_API_KEY":
+        if key.startswith("TICKWELL_") or key == "ANTHROPIC_API_KEY":
             monkeypatch.delenv(key)
 
-    from orderdesk.config import Settings
+    from tickwell.config import Settings
 
     s = Settings()
     assert s.exact_division is None

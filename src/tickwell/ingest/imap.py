@@ -7,7 +7,7 @@ class IMAPSource:
 
     def __init__(self, host: str | None, user: str | None, password: str | None, folder: str = "INBOX"):
         if not (host and user and password):
-            raise ValueError("IMAP needs ORDERDESK_IMAP_HOST, ORDERDESK_IMAP_USER and ORDERDESK_IMAP_PASSWORD.")
+            raise ValueError("IMAP needs TICKWELL_IMAP_HOST, TICKWELL_IMAP_USER and TICKWELL_IMAP_PASSWORD.")
         self.host, self.user, self.password, self.folder = host, user, password, folder
 
     def fetch(self) -> Iterator[bytes]:
