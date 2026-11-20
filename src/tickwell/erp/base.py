@@ -46,6 +46,6 @@ def get_erp(name: str | None = None) -> ERPConnector:
         from .exact_online import ExactOnlineConnector
 
         if not (s.exact_division and s.exact_access_token):
-            raise ERPError("Exact Online needs ORDERDESK_EXACT_DIVISION and ORDERDESK_EXACT_ACCESS_TOKEN.")
+            raise ERPError("Exact Online needs TICKWELL_EXACT_DIVISION and TICKWELL_EXACT_ACCESS_TOKEN.")
         return ExactOnlineConnector(s.exact_base_url, s.exact_division, s.exact_access_token)
     raise ERPError(f"Unknown ERP connector: {name}")

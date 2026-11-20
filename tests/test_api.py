@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 
 
 def client():
-    from orderdesk.api.app import create_app
+    from tickwell.api.app import create_app
 
     return TestClient(create_app())
 
@@ -51,8 +51,8 @@ def test_cannot_approve_until_lines_checked_and_learns_aliases(env):
 
     from sqlalchemy import select
 
-    from orderdesk.db import new_session
-    from orderdesk.models import CustomerAlias
+    from tickwell.db import new_session
+    from tickwell.models import CustomerAlias
 
     s = new_session()
     learned = s.scalars(select(CustomerAlias).where(CustomerAlias.source == "learned")).all()
@@ -61,9 +61,9 @@ def test_cannot_approve_until_lines_checked_and_learns_aliases(env):
 
 
 def test_basic_auth(env, monkeypatch):
-    monkeypatch.setenv("ORDERDESK_UI_USER", "desk")
-    monkeypatch.setenv("ORDERDESK_UI_PASSWORD", "secret")
-    from orderdesk.config import get_settings
+    monkeypatch.setenv("TICKWELL_UI_USER", "desk")
+    monkeypatch.setenv("TICKWELL_UI_PASSWORD", "secret")
+    from tickwell.config import get_settings
 
     get_settings.cache_clear()
     with client() as c:

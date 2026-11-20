@@ -24,10 +24,10 @@ current data handling terms of the model provider you use and tell the client wh
 
 ## Week 2: build and measure
 
-1. `orderdesk init --data client_data`
+1. `tickwell init --data client_data`
 2. Ingest the historical emails from a folder.
 3. Write their ground truth file (same shape as `data/sample/ground_truth.json`).
-4. `orderdesk evaluate --truth client_data/ground_truth.json`
+4. `tickwell evaluate --truth client_data/ground_truth.json`
 5. Fix what fails: add aliases, customer notes (trolley sizes, standing agreements), prompt
    rules for their quirks. Re-run until the numbers hold.
 
@@ -39,7 +39,7 @@ Go-live criteria to agree with the client:
 
 ## Week 3: shadow mode
 
-Connect the real mailbox (`ORDERDESK_MAIL_SOURCE=graph`) and run the worker. The order desk
+Connect the real mailbox (`TICKWELL_MAIL_SOURCE=graph`) and run the worker. The order desk
 keeps working as before and checks drafts alongside. Track review time and corrections.
 
 ## Week 4: go live

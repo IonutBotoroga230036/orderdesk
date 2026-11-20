@@ -30,7 +30,7 @@ class ExactOnlineConnector:
         body = {
             "OrderedBy": order.customer_erp_id,
             "YourRef": order.reference,
-            "Description": f"OrderDesk draft {order.draft_id}",
+            "Description": f"Tickwell draft {order.draft_id}",
             "SalesOrderLines": [{"Item": line.erp_id, "Quantity": line.quantity} for line in order.lines],
         }
         if order.delivery_date:

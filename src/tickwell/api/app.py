@@ -91,7 +91,7 @@ def create_app() -> FastAPI:
         init_db()
         yield
 
-    app = FastAPI(title="OrderDesk", version="0.1.0", lifespan=lifespan)
+    app = FastAPI(title="Tickwell", version="0.1.0", lifespan=lifespan)
     auth = [Depends(require_auth)]
 
     @app.get("/api/health")

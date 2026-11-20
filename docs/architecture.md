@@ -34,7 +34,7 @@ the rules flagged.
 ## Data model
 
 Master data (copied from the ERP): `products`, `customers`, `customer_aliases`,
-`past_order_lines`. OrderDesk data: `emails`, `attachments`, `drafts`, `draft_lines`,
+`past_order_lines`. Tickwell data: `emails`, `attachments`, `drafts`, `draft_lines`,
 `audit_events`.
 
 `draft_lines.match_method` records how a product was found (`alias`, `llm`, `fuzzy`, `none`,

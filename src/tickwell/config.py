@@ -6,15 +6,15 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    # env_ignore_empty: a blank line like "ORDERDESK_EXACT_DIVISION=" in .env means "not set",
+    # env_ignore_empty: a blank line like "TICKWELL_EXACT_DIVISION=" in .env means "not set",
     # so it falls back to the default instead of failing to parse "" as a number.
-    model_config = SettingsConfigDict(env_file=".env", env_prefix="ORDERDESK_", extra="ignore", env_ignore_empty=True)
+    model_config = SettingsConfigDict(env_file=".env", env_prefix="TICKWELL_", extra="ignore", env_ignore_empty=True)
 
-    database_url: str = "sqlite:///./orderdesk.db"
+    database_url: str = "sqlite:///./tickwell.db"
 
     extractor: str = "claude"  # claude | local | heuristic
     anthropic_api_key: str | None = Field(
-        default=None, validation_alias=AliasChoices("ANTHROPIC_API_KEY", "ORDERDESK_ANTHROPIC_API_KEY")
+        default=None, validation_alias=AliasChoices("ANTHROPIC_API_KEY", "TICKWELL_ANTHROPIC_API_KEY")
     )
     anthropic_model: str = "claude-sonnet-5-5"
 

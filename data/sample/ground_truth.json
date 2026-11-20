@@ -2,7 +2,7 @@
   "description": "Correct orders for the sample emails, as a person would enter them.",
   "emails": [
     {
-      "message_id": "<01-de-linde@sample.orderdesk>",
+      "message_id": "<01-de-linde@sample.tickwell>",
       "expected": [
         {
           "product_code": "LAV-HID-P19",
@@ -23,7 +23,7 @@
       ]
     },
     {
-      "message_id": "<02-brightwell@sample.orderdesk>",
+      "message_id": "<02-brightwell@sample.tickwell>",
       "expected": [
         {
           "product_code": "SAL-CAR-P13",
@@ -44,7 +44,7 @@
       ]
     },
     {
-      "message_id": "<03-hoffmann@sample.orderdesk>",
+      "message_id": "<03-hoffmann@sample.tickwell>",
       "expected": [
         {
           "product_code": "HYD-ANN-C5",
@@ -65,7 +65,7 @@
       ]
     },
     {
-      "message_id": "<04-groen-in-de-stad@sample.orderdesk>",
+      "message_id": "<04-groen-in-de-stad@sample.tickwell>",
       "expected": [
         {
           "product_code": "PEN-HAM-P17",
@@ -82,7 +82,7 @@
       ]
     },
     {
-      "message_id": "<05-les-saules@sample.orderdesk>",
+      "message_id": "<05-les-saules@sample.tickwell>",
       "expected": [
         {
           "product_code": "PHO-RED-C3",

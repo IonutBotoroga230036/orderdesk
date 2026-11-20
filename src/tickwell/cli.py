@@ -1,4 +1,4 @@
-"""Command line: orderdesk init | ingest | draft | serve | worker | evaluate."""
+"""Command line: tickwell init | ingest | draft | serve | worker | evaluate."""
 
 import argparse
 import json
@@ -10,7 +10,7 @@ from pathlib import Path
 from .config import get_settings
 from .db import init_db, session_scope
 
-log = logging.getLogger("orderdesk")
+log = logging.getLogger("tickwell")
 
 
 def cmd_init(args):
@@ -48,7 +48,7 @@ def cmd_draft(args):
 def cmd_serve(args):
     import uvicorn
 
-    uvicorn.run("orderdesk.api.app:app", host=args.host, port=args.port, reload=args.reload)
+    uvicorn.run("tickwell.api.app:app", host=args.host, port=args.port, reload=args.reload)
 
 
 def cmd_worker(args):
@@ -93,7 +93,7 @@ def cmd_evaluate(args):
 
 def main(argv=None):
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
-    p = argparse.ArgumentParser(prog="orderdesk", description="Order emails in, reviewed draft orders out.")
+    p = argparse.ArgumentParser(prog="tickwell", description="Order emails in, reviewed draft orders out.")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     sp = sub.add_parser("init", help="Create the database and load master data from CSV files")

@@ -62,7 +62,7 @@ def main():
         msg["To"] = "GreenLine Orders <orders@greenlineplants.nl>"
         msg["Subject"] = e["subject"]
         msg["Date"] = format_datetime(datetime(2026, 10, 12, *e["time"], tzinfo=TZ))
-        msg["Message-ID"] = f"<{e['file'][:-4]}@sample.orderdesk>"
+        msg["Message-ID"] = f"<{e['file'][:-4]}@sample.tickwell>"
         msg.set_content(e["body"])
         if "pdf" in e:
             msg.add_attachment(make_pdf(e["pdf"]), maintype="application", subtype="pdf", filename="Bestellung_4471.pdf")

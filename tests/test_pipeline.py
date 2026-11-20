@@ -2,9 +2,9 @@ from types import SimpleNamespace
 
 from conftest import email_by_subject
 
-from orderdesk.extraction.claude import ClaudeExtractor
-from orderdesk.extraction.heuristic import HeuristicExtractor
-from orderdesk.pipeline import draft_email, propose
+from tickwell.extraction.claude import ClaudeExtractor
+from tickwell.extraction.heuristic import HeuristicExtractor
+from tickwell.pipeline import draft_email, propose
 
 
 def test_heuristic_drafts_tidy_list(session):

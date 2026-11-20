@@ -6,4 +6,4 @@ COPY src ./src
 RUN pip install --no-cache-dir .
 COPY data ./data
 EXPOSE 8000
-CMD ["orderdesk", "serve", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["tickwell", "serve", "--host", "0.0.0.0", "--port", "8000"]

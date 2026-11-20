@@ -1,6 +1,6 @@
 # Local deployment
 
-Some clients will not let order data leave their building: no cloud AI, no API keys. OrderDesk
+Some clients will not let order data leave their building: no cloud AI, no API keys. Tickwell
 supports this with the `local` extractor, which sends the prompt to an Ollama server on the same
 machine or local network instead of to Claude.
 
@@ -9,10 +9,10 @@ machine or local network instead of to Claude.
 | Step | Cloud setup | Local setup |
 |---|---|---|
 | Reading the mailbox | Client's own Microsoft 365 / IMAP | Same |
-| Parsing emails, PDFs, Excel | OrderDesk machine | Same |
-| **Reading the order (extraction)** | **Claude API** | **Ollama on the OrderDesk machine** |
-| Catalog matching, rules, review, database | OrderDesk machine | Same |
-| Sending to the ERP | OrderDesk machine to client's ERP | Same |
+| Parsing emails, PDFs, Excel | Tickwell machine | Same |
+| **Reading the order (extraction)** | **Claude API** | **Ollama on the Tickwell machine** |
+| Catalog matching, rules, review, database | Tickwell machine | Same |
+| Sending to the ERP | Tickwell machine to client's ERP | Same |
 
 Only one row changes. That is the whole privacy story, and it fits on one slide.
 
@@ -23,20 +23,20 @@ Only one row changes. That is the whole privacy story, and it fits on one slide.
 3. In `.env`:
 
    ```
-   ORDERDESK_EXTRACTOR=local
-   ORDERDESK_OLLAMA_MODEL=<model>
-   ORDERDESK_OLLAMA_NUM_CTX=16384
-   ORDERDESK_LOCAL_ONLY=true
+   TICKWELL_EXTRACTOR=local
+   TICKWELL_OLLAMA_MODEL=<model>
+   TICKWELL_OLLAMA_NUM_CTX=16384
+   TICKWELL_LOCAL_ONLY=true
    ```
 
 4. Measure before promising anything:
 
    ```bash
-   orderdesk init --reset && orderdesk ingest
-   orderdesk evaluate --truth data/sample/ground_truth.json --extractor local
+   tickwell init --reset && tickwell ingest
+   tickwell evaluate --truth data/sample/ground_truth.json --extractor local
    ```
 
-5. Run as usual: `orderdesk worker` in one terminal, `orderdesk serve` in another.
+5. Run as usual: `tickwell worker` in one terminal, `tickwell serve` in another.
 
 ## Setup with Docker
 
@@ -45,13 +45,13 @@ docker compose -f docker-compose.yml -f docker-compose.local.yml up -d --build
 docker compose exec ollama ollama pull <model>
 ```
 
-Set `ORDERDESK_OLLAMA_MODEL` in `.env` and restart. With an NVIDIA GPU, uncomment the `deploy`
+Set `TICKWELL_OLLAMA_MODEL` in `.env` and restart. With an NVIDIA GPU, uncomment the `deploy`
 block in `docker-compose.local.yml`.
 
 ## Choosing a model
 
 Open-weight model families change quickly, so do not pick one from a blog post: pick it with
-`orderdesk evaluate`. Pull two or three current instruction-tuned models (for example from the
+`tickwell evaluate`. Pull two or three current instruction-tuned models (for example from the
 Qwen, Llama, Mistral and Gemma families) in sizes the hardware can run, evaluate each on the
 client's historical emails, and choose on these numbers, in this order:
 
@@ -71,7 +71,7 @@ many of them.
 
 The prompt contains the catalog and the customer's recent orders. Ollama's default context
 window is small and **cuts long prompts without an error**, which looks like a model that
-ignores half the catalog. OrderDesk sets `num_ctx` to 16384 by default and logs a warning when a
+ignores half the catalog. Tickwell sets `num_ctx` to 16384 by default and logs a warning when a
 prompt gets close. A larger window needs more memory. For catalogs with thousands of articles,
 send only the top candidates per email (see the roadmap in the README).
 
@@ -82,15 +82,15 @@ Rules of thumb, not guarantees. Always check speed on the client's own emails.
 - **Pilot:** a recent laptop or desktop. CPU-only works for small models; slow, but fine to
   prove the idea.
 - **Production in the client's office:** a small machine with a GPU that has enough memory for
-  the chosen model, or a Mac with plenty of unified memory. It runs OrderDesk, Ollama and the
+  the chosen model, or a Mac with plenty of unified memory. It runs Tickwell, Ollama and the
   database together.
 - Price the hardware into the setup fee and the upkeep into the monthly fee. "A box in your
   building that I manage, and your data never leaves it" is a product in itself.
 
 ## Checklist before telling a client "nothing leaves your network"
 
-- `ORDERDESK_LOCAL_ONLY=true` is set, and `orderdesk draft` starts without errors.
-- `ORDERDESK_OLLAMA_BASE_URL` points at localhost, a private IP, or the Docker service name.
+- `TICKWELL_LOCAL_ONLY=true` is set, and `tickwell draft` starts without errors.
+- `TICKWELL_OLLAMA_BASE_URL` points at localhost, a private IP, or the Docker service name.
 - The mailbox connection goes to the client's own Microsoft 365 tenant or mail server.
 - The ERP connector writes CSV files locally or talks to the client's own ERP.
 - No `ANTHROPIC_API_KEY` in `.env` on that machine.

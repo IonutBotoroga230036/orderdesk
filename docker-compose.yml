@@ -3,8 +3,8 @@ services:
     build: .
     env_file: .env
     environment:
-      ORDERDESK_DATABASE_URL: sqlite:////app/state/orderdesk.db
-      ORDERDESK_EXPORT_DIR: /app/state/exports
+      TICKWELL_DATABASE_URL: sqlite:////app/state/tickwell.db
+      TICKWELL_EXPORT_DIR: /app/state/exports
     volumes:
       - ./state:/app/state
     ports:
@@ -13,10 +13,10 @@ services:
     build: .
     env_file: .env
     environment:
-      ORDERDESK_DATABASE_URL: sqlite:////app/state/orderdesk.db
-      ORDERDESK_EXPORT_DIR: /app/state/exports
+      TICKWELL_DATABASE_URL: sqlite:////app/state/tickwell.db
+      TICKWELL_EXPORT_DIR: /app/state/exports
     volumes:
       - ./state:/app/state
-    command: ["orderdesk", "worker"]
+    command: ["tickwell", "worker"]
     depends_on:
       - web
