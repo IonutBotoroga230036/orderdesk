@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Tickwell">
+  <defs>
+    <mask id="tw-gap" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120">
+      <rect width="120" height="120" fill="#fff"/>
+      <path d="M37 77 H44 L52 85 L98 29" fill="none" stroke="#000" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+    </mask>
+  </defs>
+  <rect width="120" height="120" rx="27" fill="#2E6B3B"/>
+  <g mask="url(#tw-gap)">
+    <rect x="22" y="38" width="76" height="56" rx="9" fill="none" stroke="#FAFBF8" stroke-opacity=".9" stroke-width="7"/>
+    <path d="M34 53 H67 M34 66 H56" fill="none" stroke="#FAFBF8" stroke-opacity=".5" stroke-width="7" stroke-linecap="round"/>
+  </g>
+  <path d="M37 77 H44 L52 85 L98 29" fill="none" stroke="#FAFBF8" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

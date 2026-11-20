@@ -1,3 +1,5 @@
+<img src="docs/brand/tickwell-mark.svg" width="84" alt="Tickwell logo">
+
 # Tickwell
 
 Tickwell turns customer order emails into draft sales orders. It reads the email and its
