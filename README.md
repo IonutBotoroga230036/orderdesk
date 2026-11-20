@@ -16,6 +16,7 @@ This is an MVP that runs end to end. Honest overview:
 |---|---|
 | Email parsing, PDF and Excel attachments | Working |
 | Extraction with Claude (structured tool output) | Working, needs an API key |
+| Extraction with a local model (Ollama), local-only mode | Working against a simulated server; test with a real model before a pilot |
 | Offline heuristic extractor | Working, tidy lists only (baseline) |
 | Catalog matching, customer aliases, stock and quantity rules | Working, tested |
 | Review screen with source highlighting, approve flow | Working |
@@ -55,6 +56,30 @@ orderdesk evaluate --truth data/sample/ground_truth.json
 
 Compare with `orderdesk evaluate --truth data/sample/ground_truth.json --extractor heuristic`.
 
+## Fully local (no data leaves the machine)
+
+For clients who don't allow order data to go to a cloud AI service. An open-weight model runs
+on the same machine through [Ollama](https://ollama.com); everything else in OrderDesk was
+already local.
+
+```bash
+# 1. Install Ollama (Windows, macOS or Linux) from ollama.com, then pull a model
+ollama pull <model>
+
+# 2. In .env
+ORDERDESK_EXTRACTOR=local
+ORDERDESK_OLLAMA_MODEL=<model>
+ORDERDESK_LOCAL_ONLY=true
+
+# 3. Measure it against the same ground truth as Claude
+orderdesk evaluate --truth data/sample/ground_truth.json --extractor local
+```
+
+`ORDERDESK_LOCAL_ONLY=true` makes the promise enforceable: the Claude extractor refuses to
+start, and so does a local extractor pointed at a server outside the local network.
+
+Full setup, model choice, hardware and the Docker variant: [docs/local-deployment.md](docs/local-deployment.md).
+
 ## How it works
 
 ```mermaid
@@ -77,7 +102,8 @@ Design rules that make this safe to sell:
    customer aliases always win, and a match whose catalog name looks nothing like what the
    customer wrote goes to review, even when the model was confident.
 3. **Rules only make lines stricter.** Stock and quantity checks can flag a line, never clear one.
-4. **Only the sender's own data goes into the prompt** when the sender is known.
+4. **Only the sender's own data goes into the prompt** when the sender is known, and with
+   the local extractor nothing leaves the client's network at all.
 5. **Every correction is logged.** That is how accuracy is measured and how the system learns
    each customer's wording.
 
@@ -86,7 +112,7 @@ Design rules that make this safe to sell:
 ```
 src/orderdesk/
   parsing/        email + attachment text
-  extraction/     Claude extractor, heuristic extractor, prompt
+  extraction/     Claude, local (Ollama) and heuristic extractors, shared prompt and schema
   matching/       normalisation, pot sizes, catalog matcher
   rules.py        stock and quantity checks
   pipeline.py     email -> proposal -> saved draft
@@ -98,7 +124,7 @@ src/orderdesk/
   web/            review screen (plain HTML/JS, no build step)
 data/sample/      fictional catalog, customers, history, emails, ground truth
 data/templates/   empty CSVs for a client's data export
-docs/             architecture and client playbook
+docs/             architecture, client playbook, local deployment
 tests/            pytest suite (runs offline)
 ```
 
@@ -108,7 +134,7 @@ tests/            pytest suite (runs offline)
 |---|---|
 | `orderdesk init [--data DIR] [--reset]` | Create tables, load master data CSVs |
 | `orderdesk ingest [--source folder\|imap\|graph]` | Fetch new emails |
-| `orderdesk draft [--extractor claude\|heuristic]` | Draft all new emails |
+| `orderdesk draft [--extractor claude\|local\|heuristic]` | Draft all new emails |
 | `orderdesk serve [--host --port --reload]` | Review screen + API on port 8000 |
 | `orderdesk worker [--every N] [--once]` | Poll the mailbox and draft continuously |
 | `orderdesk evaluate --truth FILE` | Shadow test against known correct orders |
@@ -133,6 +159,7 @@ Put the client's exports in `client_data/` (ignored by git) using the formats in
 make test        # pytest
 make lint        # ruff
 make eval        # shadow test with Claude
+make eval-local  # shadow test with the local model
 make eval-offline
 python scripts/make_sample_emails.py   # regenerate sample emails + ground truth
 ```

@@ -106,7 +106,7 @@ def main(argv=None):
     sp.set_defaults(func=cmd_ingest)
 
     sp = sub.add_parser("draft", help="Draft orders for all new emails")
-    sp.add_argument("--extractor", choices=["claude", "heuristic"])
+    sp.add_argument("--extractor", choices=["claude", "local", "heuristic"])
     sp.set_defaults(func=cmd_draft)
 
     sp = sub.add_parser("serve", help="Run the review screen and API")
@@ -116,18 +116,24 @@ def main(argv=None):
     sp.set_defaults(func=cmd_serve)
 
     sp = sub.add_parser("worker", help="Poll the mailbox and draft new orders continuously")
-    sp.add_argument("--extractor", choices=["claude", "heuristic"])
+    sp.add_argument("--extractor", choices=["claude", "local", "heuristic"])
     sp.add_argument("--every", type=int, help="Seconds between polls")
     sp.add_argument("--once", action="store_true", help="Run one cycle and exit")
     sp.set_defaults(func=cmd_worker)
 
     sp = sub.add_parser("evaluate", help="Shadow test: compare drafts with known correct orders")
     sp.add_argument("--truth", required=True, help="Ground truth JSON")
-    sp.add_argument("--extractor", choices=["claude", "heuristic"])
+    sp.add_argument("--extractor", choices=["claude", "local", "heuristic"])
     sp.set_defaults(func=cmd_evaluate)
 
     args = p.parse_args(argv)
-    args.func(args)
+    from .erp import ERPError
+    from .extraction import ExtractionError
+
+    try:
+        args.func(args)
+    except (ExtractionError, ERPError) as exc:
+        raise SystemExit(f"Error: {exc}") from None
 
 
 if __name__ == "__main__":

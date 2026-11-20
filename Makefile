@@ -1,4 +1,4 @@
-.PHONY: install demo serve test lint eval eval-offline
+.PHONY: install demo serve test lint eval eval-local eval-offline
 
 install:
 	pip install -e ".[dev]"
@@ -20,6 +20,9 @@ lint:
 
 eval:
 	orderdesk evaluate --truth data/sample/ground_truth.json
+
+eval-local:
+	orderdesk evaluate --truth data/sample/ground_truth.json --extractor local
 
 eval-offline:
 	orderdesk evaluate --truth data/sample/ground_truth.json --extractor heuristic

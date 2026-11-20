@@ -25,10 +25,55 @@ RULES = """Rules:
 7. Resolve relative dates ("donderdag", "next Tuesday", "KW 43") against the date the email was
    received. Put the original words in delivery_text.
 8. Ignore signatures, disclaimers and quoted older emails.
-Call the record_order tool exactly once."""
+"""
+
+TOOL_INSTRUCTION = "Call the record_order tool exactly once."
+JSON_INSTRUCTION = (
+    "Answer with one JSON object that follows the required schema, and nothing else. "
+    "Use null where a value is unknown."
+)
+
+ORDER_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "customer_id": {"type": ["string", "null"]},
+        "delivery_date": {"type": ["string", "null"], "description": "ISO date YYYY-MM-DD, or null"},
+        "delivery_text": {"type": "string", "description": "The customer's own words for the delivery date"},
+        "lines": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "source_text": {"type": "string"},
+                    "description": {"type": "string", "description": "What the customer asked for, in their words"},
+                    "quantity": {"type": "integer"},
+                    "product_code": {"type": ["string", "null"]},
+                    "status": {"type": "string", "enum": ["ok", "check", "unknown"]},
+                    "reason": {"type": "string"},
+                    "alternatives": {"type": "array", "items": {"type": "string"}},
+                },
+                "required": ["source_text", "description", "quantity", "product_code", "status", "reason"],
+            },
+        },
+        "removed": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "source_text": {"type": "string"},
+                    "product_code": {"type": "string"},
+                    "quantity": {"type": "integer"},
+                    "reason": {"type": "string"},
+                },
+                "required": ["product_code"],
+            },
+        },
+    },
+    "required": ["customer_id", "delivery_date", "delivery_text", "lines"],
+}
 
 
-def build_prompt(text: str, ctx: ExtractionContext) -> str:
+def build_prompt(text: str, ctx: ExtractionContext, final_instruction: str = TOOL_INSTRUCTION) -> str:
     catalog = "\n".join(f"{p.code} | {p.name} | {p.pot or '-'} | {p.price:.2f}" for p in ctx.catalog)
     customers = []
     for c in ctx.customers:
@@ -56,4 +101,5 @@ EMAIL TEXT:
 {text}
 \"\"\"
 
-{RULES}"""
+{RULES}
+{final_instruction}"""

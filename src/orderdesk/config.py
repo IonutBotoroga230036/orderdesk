@@ -10,11 +10,18 @@ class Settings(BaseSettings):
 
     database_url: str = "sqlite:///./orderdesk.db"
 
-    extractor: str = "claude"  # claude | heuristic
+    extractor: str = "claude"  # claude | local | heuristic
     anthropic_api_key: str | None = Field(
         default=None, validation_alias=AliasChoices("ANTHROPIC_API_KEY", "ORDERDESK_ANTHROPIC_API_KEY")
     )
     anthropic_model: str = "claude-sonnet-5-5"
+
+    # Local model through Ollama: no order data leaves the machine or network
+    ollama_base_url: str = "http://localhost:11434"
+    ollama_model: str | None = None
+    ollama_num_ctx: int = 16384  # Ollama's default context is small and silently cuts long prompts
+    ollama_timeout: float = 300.0
+    local_only: bool = False  # refuse any extractor that would send data outside the local network
 
     mail_source: str = "folder"  # folder | imap | graph
     inbox_dir: Path = Path("data/sample/emails")
